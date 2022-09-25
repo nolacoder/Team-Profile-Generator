@@ -1,49 +1,59 @@
 const Employee = require('./lib/Employee');
 const inquirer = require('inquirer');
+const {managerQuestions, engineerQuestions, internQuestions} = require('./lib/questions');
+
+const teamArr = [];
 
 const askInitialQuestions = () => {
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "ManagerName",
-            message: "Please enter the team manager's name:"
-        },
-        {
-            type: "input",
-            name: "ManagerID",
-            message: "Please enter the manager's ID:",
-        },
-        {
-            type: "input",
-            name: "ManagerEmail",
-            message: "Please enter the manager's email:",
-        },
-        {
-            type: "input",
-            name: "ManagerOffNo",
-            message: "Please enter the manager's office number:"
-        }
-    ]);
+    inquirer.prompt(managerQuestions)
+        .then((response) => addToTeamArr(response))
+        .then(() => console.log(teamArr))
+        .then(handleAdditionalMembers)
 }
 
+const askEngineerQuestions = () => {
+    inquirer.prompt(engineerQuestions)
+        .then((response) => addToTeamArr(response))
+        .then(() => console.log(teamArr))
+        .then(handleAdditionalMembers)
+}
+
+const askInternQuestions = () => {
+    inquirer.prompt(internQuestions)
+        .then((response) => addToTeamArr(response))
+        .then(() => console.log(teamArr))
+        .then(handleAdditionalMembers)
+}
+
+const addToTeamArr = (memberObj) => {
+    return teamArr.push(memberObj)
+ }
+
 const continueRoster = () => {
-    inquirer.prompt([
+    return inquirer.prompt([
         {
             type: "list",
-            name: "Next Teammate",
-            message: ["Engineer", "Intern", "None"]
+            name: "NextTeammate",
+            message: "Would you like to add another team member?",
+            choices:["Engineer", "Intern", "No"],
         },
     ])
 }
 
-const init = () => {
-    askInitialQuestions()
-        .then((answers) => {
-            console.log(answers)
-        })
-        .then(() => continueRoster())
-        .then((response) => console.log(response))
-        .catch((err) => console.error(err))
+const handleContinueResponse = (response) => {
+    if (response.NextTeammate === "Engineer") {
+        askEngineerQuestions();
+    } else if (response.NextTeammate === "Intern") {
+        askInternQuestions();
+    } else {
+        console.log("Time to build html");
+    }
 }
 
-init();
+const handleAdditionalMembers = () => {
+    continueRoster()
+        .then((response) => handleContinueResponse(response))
+}
+
+askInitialQuestions();
+
