@@ -56,19 +56,5 @@ const continueRoster = () => {
         })
 }
 
-// const handleContinueResponse = (response) => {
-//     if (response.NextTeammate === "Engineer") {
-//         askEngineerQuestions();
-//     } else if (response.NextTeammate === "Intern") {
-//         askInternQuestions();
-//     } else {
-//         const htmlCards = generateCards(teamArr);
-//         const htmlPageContent = generateHTML(htmlCards)
-//         fs.writeFile('index.html', htmlPageContent, (err) =>
-//             err ? console.log(err) : console.log('Successfully created index.html!')
-//         );
-//     }
-// }
-
 askManagerQuestions();
 
