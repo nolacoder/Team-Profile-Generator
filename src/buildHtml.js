@@ -22,9 +22,8 @@ const generateCards = (teamArr) => {
             let card =
                 `<div class="card m-3">
                     <div class="card-header bg-primary text-white">
-                        <h3>${teamArr[i].name} <br>
-                        - ${teamArr[i].constructor.name}
-                        </h3>
+                        <h3>${teamArr[i].name} </h3>
+                        <h4>- ${teamArr[i].constructor.name} </h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
@@ -40,9 +39,8 @@ const generateCards = (teamArr) => {
             let card =
                 `<div class="card m-3">
                     <div class="card-header bg-primary text-white">
-                        <h3>${teamArr[i].name} <br>
-                        - ${teamArr[i].constructor.name}
-                        </h3>
+                        <h3>${teamArr[i].name} </h3>
+                        <h4>- ${teamArr[i].constructor.name} </h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">

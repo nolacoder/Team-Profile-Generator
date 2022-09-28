@@ -2,9 +2,9 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
-const { managerQuestions, engineerQuestions, internQuestions, continueQuestions } = require('./lib/questions');
+const { managerQuestions, engineerQuestions, internQuestions, continueQuestions } = require('./src/questions');
 const fs = require('fs');
-const {generateHTML, generateCards} = require('./lib/buildHtml');
+const {generateHTML, generateCards} = require('./src/buildHtml');
 
 const teamArr = [];
 
@@ -49,7 +49,7 @@ const continueRoster = () => {
             } else {
                 const htmlCards = generateCards(teamArr);
                 const htmlPageContent = generateHTML(htmlCards)
-                fs.writeFile('index.html', htmlPageContent, (err) =>
+                fs.writeFile('./dist/index.html', htmlPageContent, (err) =>
                     err ? console.log(err) : console.log('Successfully created index.html!')
                 );
             }
