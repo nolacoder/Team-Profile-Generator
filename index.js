@@ -3,6 +3,8 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
 const { managerQuestions, engineerQuestions, internQuestions, continueQuestions } = require('./lib/questions');
+const fs = require('fs');
+const {generateHTML, generateCards} = require('./lib/buildHtml');
 
 const teamArr = [];
 
@@ -11,7 +13,6 @@ const askManagerQuestions = () => {
         .then((response) => {
             const newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOffNo)
             addToTeamArr(newManager)
-            console.log(teamArr);
             continueRoster();
         })
 }
@@ -21,7 +22,6 @@ const askEngineerQuestions = () => {
         .then((response) => {
             const newEngineer = new Engineer(response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub)
             addToTeamArr(newEngineer);
-            console.log(teamArr);
             continueRoster();
         })
 }
@@ -31,7 +31,6 @@ const askInternQuestions = () => {
         .then((response) => {
             const newIntern = new Intern(response.internName, response.internId, response.internEmail, response.school)
             addToTeamArr(newIntern);
-            console.log(teamArr);
             continueRoster();
         })
 }
@@ -42,18 +41,34 @@ const addToTeamArr = (memberObj) => {
 
 const continueRoster = () => {
     return inquirer.prompt(continueQuestions)
-        .then((response) => handleContinueResponse(response))
+        .then((response) => {
+            if (response.NextTeammate === "Engineer") {
+                askEngineerQuestions();
+            } else if (response.NextTeammate === "Intern") {
+                askInternQuestions();
+            } else {
+                const htmlCards = generateCards(teamArr);
+                const htmlPageContent = generateHTML(htmlCards)
+                fs.writeFile('index.html', htmlPageContent, (err) =>
+                    err ? console.log(err) : console.log('Successfully created index.html!')
+                );
+            }
+        })
 }
 
-const handleContinueResponse = (response) => {
-    if (response.NextTeammate === "Engineer") {
-        askEngineerQuestions();
-    } else if (response.NextTeammate === "Intern") {
-        askInternQuestions();
-    } else {
-        console.log("Time to build html");
-    }
-}
+// const handleContinueResponse = (response) => {
+//     if (response.NextTeammate === "Engineer") {
+//         askEngineerQuestions();
+//     } else if (response.NextTeammate === "Intern") {
+//         askInternQuestions();
+//     } else {
+//         const htmlCards = generateCards(teamArr);
+//         const htmlPageContent = generateHTML(htmlCards)
+//         fs.writeFile('index.html', htmlPageContent, (err) =>
+//             err ? console.log(err) : console.log('Successfully created index.html!')
+//         );
+//     }
+// }
 
 askManagerQuestions();
 
